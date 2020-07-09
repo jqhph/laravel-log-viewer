@@ -10,9 +10,11 @@
     <a href="https://github.com/jqhph/laravel-log-viewer/releases" ><img src="https://img.shields.io/github/release/jqhph/laravel-log-viewer.svg?color=4099DE" /></a> 
 </p>
 
+`Dcat Log Viewer`是一个`Laravel`日志查看工具，支持大文件日志的查看和搜索功能，更改自[laravel-admin-extensions/log-viewer](https://github.com/laravel-admin-extensions/log-viewer)。
+
 </div>
 
-`Dcat Log Viewer`是一个`Laravel`日志查看工具，支持查看、搜索大文件。
+![](https://cdn.learnku.com/uploads/images/202007/09/38389/5Ps3bfhdrR.png!large)
 
 ## 功能
 
@@ -23,7 +25,6 @@
 - [x] 支持下载功能
 - [x] 支持分页
 - [x] 支持手机页面
-
 
 
 ## 环境
