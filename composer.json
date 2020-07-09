@@ -1,0 +1,29 @@
+{
+  "name": "dcat/laravel-log-viewer",
+  "description": "Laravel Log Viewer",
+  "type": "library",
+  "keywords": ["laravel", "log viewer"],
+  "homepage": "https://github.com/jqhph/laravel-log-viewer",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "jqh",
+      "email": "841324345@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Dcat\\LogViewer\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Dcat\\LogViewer\\DcatLogViewerServiceProvider"
+      ]
+    }
+  }
+}
