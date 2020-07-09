@@ -2,10 +2,9 @@
 
 namespace Dcat\LogViewer;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 
-class LogController extends Controller
+class LogController
 {
     public function index($file = null)
     {
