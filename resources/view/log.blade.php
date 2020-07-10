@@ -288,8 +288,10 @@
 
 {{--                    <button class="btn btn-default btn-sm download"><i class="fa-trash-o fa"></i> {{ trans('Delete') }}</button>--}}
                     &nbsp;
-                    <form style="display: inline-block;width: 180px">
+                    <form action="{{ app('request')->fullUrlWithQuery(['keyword' => null,]) }}" style="display: inline-block;width: 180px">
                         <div class="input-group-sm" style="display: inline-block;width: 100%">
+                            <input type="hidden" name="dir" value="{{ $dir }}">
+                            <input type="hidden" name="filename" value="{{ app('request')->get('filename') }}">
                             <input name="keyword" class="form-control" value="{{ app('request')->get('keyword') }}" type="text" placeholder="Search..." />
                         </div>
                     </form>
