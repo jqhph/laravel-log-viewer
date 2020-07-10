@@ -214,6 +214,8 @@ class LogViewer
             'file' => $this->getFile(),
             'offset' => $this->pageOffset['end'],
             'keyword' => $this->keyword,
+            'dir' => $this->currentDirectory,
+            'filename' => $this->filename,
         ]);
     }
 
@@ -236,6 +238,8 @@ class LogViewer
             'file' => $this->getFile(),
             'offset' => -$this->pageOffset['start'],
             'keyword' => $this->keyword,
+            'dir' => $this->currentDirectory,
+            'filename' => $this->filename,
         ]);
     }
 
