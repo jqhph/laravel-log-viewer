@@ -248,13 +248,13 @@
 
                 <form action="{{ route('dcat-log-viewer') }}" style="display: inline-block;width: 220px;padding-left: 15px">
                     <div class="input-group-sm" style="display: inline-block;width: 100%">
-                        <input name="filename" class="form-control" value="{{ request('filename') }}" type="text" placeholder="Search..." />
+                        <input name="filename" class="form-control" value="{{ app('request')->get('filename') }}" type="text" placeholder="Search..." />
                     </div>
                 </form>
 
                 <div class="box-body no-padding">
                     <ul class="nav nav-pills nav-stacked">
-                        @if(! request('filename'))
+                        @if(! app('request')->get('filename'))
                             @foreach($logDirs as $d)
                                 <li @if($d === $fileName) class="active" @endif>
                                     <a class="dir" href="{{ route('dcat-log-viewer', ['dir' => $d]) }}">
@@ -284,18 +284,18 @@
         <div class="col-md-10">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('dcat-log-viewer.download', ['dir' => $dir, 'file' => $fileName]) }}" class="btn btn-primary btn-sm download" style="color: #fff"><i class="fa-download fa"></i> {{ __('Download') }}</a>
+                    <a href="{{ route('dcat-log-viewer.download', ['dir' => $dir, 'file' => $fileName]) }}" class="btn btn-primary btn-sm download" style="color: #fff"><i class="fa-download fa"></i> {{ trans('Download') }}</a>
 
-{{--                    <button class="btn btn-default btn-sm download"><i class="fa-trash-o fa"></i> {{ __('Delete') }}</button>--}}
+{{--                    <button class="btn btn-default btn-sm download"><i class="fa-trash-o fa"></i> {{ trans('Delete') }}</button>--}}
                     &nbsp;
                     <form style="display: inline-block;width: 180px">
                         <div class="input-group-sm" style="display: inline-block;width: 100%">
-                            <input name="keyword" class="form-control" value="{{ request('keyword') }}" type="text" placeholder="Search..." />
+                            <input name="keyword" class="form-control" value="{{ app('request')->get('keyword') }}" type="text" placeholder="Search..." />
                         </div>
                     </form>
                     <div class="float-right">
                         <a class=""><strong>Size:</strong> {{ $size }} &nbsp; <strong>Updated at:</strong>
-                        {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s', filectime($filePath)))->diffForHumans() }}</a>
+                        {{ date('Y-m-d H:i:s', filectime($filePath)) }}</a>
                         &nbsp;
                         <div class="btn-group">
                             @if ($prevUrl)

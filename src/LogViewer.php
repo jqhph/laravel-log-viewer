@@ -98,7 +98,7 @@ class LogViewer
 
     public function setKeyword($value)
     {
-        $this->keyword = $value;
+        $this->keyword = strtolower($value);
     }
 
     public function setFilename($value)
@@ -261,7 +261,7 @@ class LogViewer
         $result = [];
 
         foreach ($logs as $log) {
-            if (Str::contains(implode(' ', $log), $this->keyword)) {
+            if (Str::contains(strtolower(implode(' ', $log)), $this->keyword)) {
                 $result[] = $log;
             }
         }

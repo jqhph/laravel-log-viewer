@@ -2,8 +2,6 @@
 
 namespace Dcat\LogViewer;
 
-use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class DcatLogViewerServiceProvider extends ServiceProvider
@@ -21,14 +19,14 @@ class DcatLogViewerServiceProvider extends ServiceProvider
 
     protected function registerRoutes()
     {
-        Route::group([
+        app('router')->group([
             'prefix' => config('dcat-log-viewer.route.prefix', 'dcat-logs'),
             'namespace' => config('dcat-log-viewer.route.namespace', 'Dcat\LogViewer'),
             'middleware' => config('dcat-log-viewer.route.middleware'),
-        ], function (Router $router) {
-            $router->get('/', 'LogController@index')->name('dcat-log-viewer');
-            $router->get('{file}', 'LogController@index')->name('dcat-log-viewer.file');
-            $router->get('download/{file}', 'LogController@download')->name('dcat-log-viewer.download');
+        ], function ($router) {
+            $router->get('/', ['as' => 'dcat-log-viewer', 'uses' => 'LogController@index',]);
+            $router->get('{file}', ['as' => 'dcat-log-viewer.file', 'uses' => 'LogController@index',]);
+            $router->get('download/{file}', ['as' => 'dcat-log-viewer.download', 'uses' => 'LogController@download',]);
         });
     }
 }
