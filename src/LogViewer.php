@@ -192,7 +192,7 @@ class LogViewer
 
     public function isCurrentFile($file)
     {
-        return $this->replaceBasePath($this->getFilePath()) === rtrim($this->currentDirectory.'/'.$file, '/');
+        return $this->replaceBasePath($this->getFilePath()) === trim($this->currentDirectory.'/'.$file, '/');
     }
 
     /**
