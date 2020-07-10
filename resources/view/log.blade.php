@@ -295,7 +295,7 @@
                     </form>
                     <div class="float-right">
                         <a class=""><strong>Size:</strong> {{ $size }} &nbsp; <strong>Updated at:</strong>
-                            {{ \Carbon\Carbon::create(date('Y-m-d H:i:s', filectime($filePath)))->diffForHumans() }}</a>
+                        {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s', filectime($filePath)))->diffForHumans() }}</a>
                         &nbsp;
                         <div class="btn-group">
                             @if ($prevUrl)
