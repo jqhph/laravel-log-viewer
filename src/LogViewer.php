@@ -73,8 +73,8 @@ class LogViewer
      */
     public function __construct($basePath, $dir, $file = null)
     {
-        $this->basePath = trim($basePath, '/');
-        $this->currentDirectory = trim($dir, '/');
+        $this->basePath = rtrim($basePath, '/');
+        $this->currentDirectory = rtrim($dir, '/');
         $this->file = $file;
         $this->files = new Filesystem();
     }
@@ -192,7 +192,7 @@ class LogViewer
 
     public function isCurrentFile($file)
     {
-        return $this->replaceBasePath($this->getFilePath()) === trim($this->currentDirectory.'/'.$file, '/');
+        return $this->replaceBasePath($this->getFilePath()) === rtrim($this->currentDirectory.'/'.$file, '/');
     }
 
     /**
