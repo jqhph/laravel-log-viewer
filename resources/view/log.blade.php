@@ -284,7 +284,7 @@
         <div class="col-md-10">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('dcat-log-viewer.download', ['dir' => $dir, 'file' => $fileName]) }}" class="btn btn-primary btn-sm download" style="color: #fff"><i class="fa-download fa"></i> {{ trans('Download') }}</a>
+                    <a href="{{ route('dcat-log-viewer.download', ['dir' => $dir, 'file' => $fileName, 'filename' => app('request')->get('filename')]) }}" class="btn btn-primary btn-sm download" style="color: #fff"><i class="fa-download fa"></i> {{ trans('Download') }}</a>
 
 {{--                    <button class="btn btn-default btn-sm download"><i class="fa-trash-o fa"></i> {{ trans('Delete') }}</button>--}}
                     &nbsp;

@@ -37,7 +37,16 @@ class LogController
 
     public function download($file = null)
     {
-        $viewer = new LogViewer($this->getDirectory(), request('dir'), $file);
+        $request = app('request');
+
+        $dir = trim($request->get('dir'));
+        $filename = trim($request->get('filename'));
+        $keyword = trim($request->get('keyword'));
+
+        $viewer = new LogViewer($this->getDirectory(), $dir, $file);
+
+        $viewer->setKeyword($keyword);
+        $viewer->setFilename($filename);
 
         return response()->download($viewer->getFilePath());
     }
