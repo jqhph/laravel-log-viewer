@@ -35,10 +35,11 @@ class LogController
         ]);
     }
 
-    public function download($file = null)
+    public function download()
     {
         $request = app('request');
 
+        $file = trim($request->get('file'));
         $dir = trim($request->get('dir'));
         $filename = trim($request->get('filename'));
         $keyword = trim($request->get('keyword'));

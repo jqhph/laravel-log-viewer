@@ -25,8 +25,8 @@ class DcatLogViewerServiceProvider extends ServiceProvider
             'middleware' => config('dcat-log-viewer.route.middleware'),
         ], function ($router) {
             $router->get('/', ['as' => 'dcat-log-viewer', 'uses' => 'LogController@index',]);
+            $router->get('download', ['as' => 'dcat-log-viewer.download', 'uses' => 'LogController@download',]);
             $router->get('{file}', ['as' => 'dcat-log-viewer.file', 'uses' => 'LogController@index',]);
-            $router->get('download/{file}', ['as' => 'dcat-log-viewer.download', 'uses' => 'LogController@download',]);
         });
     }
 }
