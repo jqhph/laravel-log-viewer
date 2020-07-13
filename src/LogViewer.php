@@ -73,10 +73,27 @@ class LogViewer
      */
     public function __construct($basePath, $dir, $file = null)
     {
-        $this->basePath = rtrim($basePath, '/');
+        $this->basePath = $this->getRealPath(rtrim($basePath, '/'));
         $this->currentDirectory = $this->formatPath(rtrim($dir, '/'));
         $this->file = $this->formatPath($file);
         $this->files = new Filesystem();
+    }
+
+    protected function getRealPath($path)
+    {
+        $paths = explode('/', $path);
+
+        $result = '';
+        foreach ($paths as $v) {
+            $result .= $v.'/';
+
+            $current = rtrim($result, '/');
+            if (is_link($current)) {
+                $result = readlink($current).'/';
+            }
+        }
+
+        return rtrim($result, '/');
     }
 
     protected function formatPath($path)
@@ -165,7 +182,7 @@ class LogViewer
             return $this->getLogBasePath();
         }
 
-        return $this->getLogBasePath() . '/' . $this->currentDirectory;
+        return $this->getLogBasePath().'/'.$this->currentDirectory;
     }
 
     /**
