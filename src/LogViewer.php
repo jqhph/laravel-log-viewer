@@ -74,9 +74,14 @@ class LogViewer
     public function __construct($basePath, $dir, $file = null)
     {
         $this->basePath = rtrim($basePath, '/');
-        $this->currentDirectory = rtrim($dir, '/');
-        $this->file = $file;
+        $this->currentDirectory = $this->formatPath(rtrim($dir, '/'));
+        $this->file = $this->formatPath($file);
         $this->files = new Filesystem();
+    }
+
+    protected function formatPath($path)
+    {
+        return str_replace(['../'], '', $path);
     }
 
     /**
@@ -103,7 +108,7 @@ class LogViewer
 
     public function setFilename($value)
     {
-        $this->filename = $value;
+        $this->filename = $this->formatPath($value);
     }
 
     /**
