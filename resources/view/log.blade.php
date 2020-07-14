@@ -258,7 +258,7 @@
                             @foreach($logDirs as $d)
                                 <li @if($d === $fileName) class="active" @endif>
                                     <a class="dir" href="{{ route('dcat-log-viewer', ['dir' => $d]) }}">
-                                        <i class="fa fa-folder-o"></i>{{ $d }}
+                                        <i class="fa fa-folder-o"></i>{{ basename($d) }}
                                     </a>
                                 </li>
                             @endforeach

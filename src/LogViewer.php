@@ -158,10 +158,10 @@ class LogViewer
         }
 
         $files = glob($this->mergeDirectory().'/*.*');
-        $files = array_combine($files, array_map('filemtime', $files));
-        arsort($files);
+        //$files = array_combine($files, array_map('filemtime', $files));
+        rsort($files);
 
-        return array_map('basename', array_keys($files));
+        return array_map('basename', $files);
     }
 
     public function getLogDirectories()
