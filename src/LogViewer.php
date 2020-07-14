@@ -81,19 +81,23 @@ class LogViewer
 
     protected function getRealPath($path)
     {
-        $paths = explode('/', $path);
+        try {
+            $paths = explode('/', $path);
 
-        $result = '';
-        foreach ($paths as $v) {
-            $result .= $v.'/';
+            $result = '';
+            foreach ($paths as $v) {
+                $result .= $v.'/';
 
-            $current = rtrim($result, '/');
-            if (is_link($current)) {
-                $result = readlink($current).'/';
+                $current = rtrim($result, '/');
+                if (is_link($current)) {
+                    $result = readlink($current).'/';
+                }
             }
-        }
 
-        return rtrim($result, '/');
+            return rtrim($result, '/');
+        } catch (\Throwable $e) {
+            return $path;
+        }
     }
 
     protected function formatPath($path)
