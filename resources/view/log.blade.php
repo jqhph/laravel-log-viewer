@@ -27,7 +27,7 @@
 
         h3 {
             font-weight: 400;
-            font-size: 20px;
+            font-size: 18px;
             margin-bottom: 0;
         }
 
@@ -215,7 +215,7 @@
         }
 
         .nav>li>a.dir {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
     </style>
