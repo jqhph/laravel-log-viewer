@@ -13,7 +13,7 @@ class LogController
         $dir      = $request->get('dir') ? trim($request->get('dir')) : '';
         $filename = $request->get('filename') ? trim($request->get('filename')) : '';
         $offset   = $request->get('offset');
-        $keyword  = $request->get('keyword') ? $request->get('keyword', '') : '';
+        $keyword  = $request->get('keyword') ? trim($request->get('keyword')) : '';
         $lines = $keyword ? (config('dcat-log-viewer.search_page_items') ?: 500) : (config('dcat-log-viewer.page_items') ?: 30);
 
         $viewer = new LogViewer($this->getDirectory(), $dir, $file);
