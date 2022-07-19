@@ -102,7 +102,7 @@ class LogViewer
 
     protected function formatPath($path)
     {
-        return str_replace(['../'], '', $path);
+        return $path ? str_replace(['../'], '', $path) : '';
     }
 
     /**
