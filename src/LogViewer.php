@@ -321,7 +321,7 @@ class LogViewer
 
         $f = fopen($this->getFilePath(), 'rb');
 
-        $type = (preg_match('/\[(\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2})\] (\w+)\.(\w+):/', fread($f, 34)) == 0) ? 'txt' : '';
+        $type = (preg_match('/\[(\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2})\] (\w+)*/', fread($f, 34)) == 0) ? 'txt' : '';
 
         if ($seek) {
             fseek($f, abs($seek));
