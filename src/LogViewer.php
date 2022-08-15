@@ -60,6 +60,7 @@ class LogViewer
         'NOTICE' => 'light-blue',
         'INFO' => 'primary',
         'DEBUG' => 'light',
+        '' => '',
     ];
 
     protected $keyword;
@@ -320,6 +321,8 @@ class LogViewer
 
         $f = fopen($this->getFilePath(), 'rb');
 
+        $type = (preg_match('/\[(\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2})\] (\w+)\.(\w+):/', fread($f, 34)) == 0) ? 'txt' : '';
+
         if ($seek) {
             fseek($f, abs($seek));
         } else {
@@ -334,32 +337,33 @@ class LogViewer
         // 从前往后读,上一页
         // Start reading
         if ($seek > 0) {
-            $output = $this->readPrevPage($f, $lines, $buffer);
+            $output = $this->readPrevPage($f, $lines, $buffer, $type);
             // 从后往前读,下一页
         } else {
-            $output = $this->readNextPage($f, $lines, $buffer);
+            $output = $this->readNextPage($f, $lines, $buffer, $type);
         }
 
         fclose($f);
 
-        return $this->parseLog($output);
+        return $this->parseLog($output, $type);
     }
 
-    protected function readPrevPage($f, &$lines, $buffer)
+    protected function readPrevPage($f, &$lines, $buffer, $type = '')
     {
+        $rule = ($type == 'txt') ? "\n" : "\n[20";
         $output = '';
 
         $this->pageOffset['start'] = ftell($f);
 
         while (!feof($f) && $lines >= 0) {
             $output = $output . ($chunk = fread($f, $buffer));
-            $lines -= substr_count($chunk, "\n[20");
+            $lines -= substr_count($chunk, $rule);
         }
 
         $this->pageOffset['end'] = ftell($f);
 
         while ($lines++ < 0) {
-            $strpos = strrpos($output, "\n[20") + 1;
+            $strpos = strrpos($output, $rule) + 1;
             $_ = mb_strlen($output, '8bit') - $strpos;
             $output = substr($output, 0, $strpos);
             $this->pageOffset['end'] -= $_;
@@ -368,8 +372,10 @@ class LogViewer
         return $output;
     }
 
-    protected function readNextPage($f, &$lines, $buffer)
+    // @lila
+    protected function readNextPage($f, &$lines, $buffer, $type = '')
     {
+        $rule = ($type == 'txt') ? "\n" : "\n[20";
         $output = '';
 
         $this->pageOffset['end'] = ftell($f);
@@ -379,13 +385,13 @@ class LogViewer
             fseek($f, -$offset, SEEK_CUR);
             $output = ($chunk = fread($f, $offset)) . $output;
             fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
-            $lines -= substr_count($chunk, "\n[20");
+            $lines -= substr_count($chunk, $rule);
         }
 
         $this->pageOffset['start'] = ftell($f);
 
         while ($lines++ < 0) {
-            $strpos = strpos($output, "\n[20") + 1;
+            $strpos = strpos($output, $rule) + 1;
             $output = substr($output, $strpos);
             $this->pageOffset['start'] += $strpos;
         }
@@ -477,15 +483,19 @@ TPL;
      *
      * @return array
      */
-    protected function parseLog($raw)
+    protected function parseLog($raw, $type = '')
     {
-        $logs = preg_split('/\[(\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2})\] (\w+)\.(\w+):((?:(?!{"exception").)*)?/', trim($raw), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        if ($type == 'txt') {
+            $logs = preg_split('/(\r\n|\n)/', trim($raw), -1, PREG_SPLIT_NO_EMPTY);
+        } else {
+            $logs = preg_split('/\[(\d{4}(?:-\d{2}){2} \d{2}(?::\d{2}){2})\] (\w+)\.(\w+):((?:(?!{"exception").)*)?/', trim($raw), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
-        foreach ($logs as $index => $log) {
-            if (preg_match('/^\d{4}/', $log)) {
-                break;
-            } else {
-                unset($logs[$index]);
+            foreach ($logs as $index => $log) {
+                if (preg_match('/^\d{4}/', $log)) {
+                    break;
+                } else {
+                    unset($logs[$index]);
+                }
             }
         }
 
@@ -494,20 +504,33 @@ TPL;
         }
 
         $parsed = [];
+        $logs = array_values($logs);
 
-        foreach (array_chunk($logs, 5) as $log) {
-            $parsed[] = [
-                'time' => $log[0] ?? '',
-                'env' => $log[1] ?? '',
-                'level' => $log[2] ?? '',
-                'info' => $log[3] ?? '',
-                'trace' => $this->replaceRootPath(trim($log[4] ?? '')),
-            ];
+        if ($type == 'txt') {
+            foreach ($logs as $log) {
+                $parsed[] = [
+                    'time' => '',
+                    'env' => '',
+                    'level' => '',
+                    'info' => $log,
+                    'trace' => '',
+                ];
+            }
+            $parsed = array_reverse($parsed);
+        } else {
+            foreach (array_chunk($logs, 5) as $log) {
+                $parsed[] = [
+                    'time' => $log[0] ?? '',
+                    'env' => $log[1] ?? '',
+                    'level' => $log[2] ?? '',
+                    'info' => $log[3] ?? '',
+                    'trace' => $this->replaceRootPath(trim($log[4] ?? '')),
+                ];
+            }
+            rsort($parsed);
         }
 
         unset($logs);
-
-        rsort($parsed);
 
         return $parsed;
     }
